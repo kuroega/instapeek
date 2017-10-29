@@ -4,8 +4,8 @@ from selenium import webdriver
 from PIL import Image
 from io import BytesIO
 
-url = "https://www.instagram.com/kuroega/"
-driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/ImageScraper/geckodriver')
+url = "https://www.instagram.com/savagesband/"
+driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/instapeek/geckodriver')
 driver.get(url)
 
 driver.execute_script("window.scrollTo(0,2000);")
@@ -35,7 +35,7 @@ n = 0
 for image_url in res:
     image_object = requests.get(image_url)
     image = Image.open(BytesIO(image_object.content))
-    image.save("/Users/rainer/Documents/workspace/python/ImageScraper/ins/image" + str(n) + "." + image.format, image.format)
+    image.save("/Users/rainer/Pictures/ins/image" + str(n) + "." + image.format, image.format)
     n += 1
 
 print("Saved " + str(n) + " pieces of art!")
