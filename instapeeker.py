@@ -4,14 +4,18 @@ from selenium import webdriver
 from PIL import Image
 from io import BytesIO
 
+# url of Instagram user page
 url = "https://www.instagram.com/savagesband/"
 driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/instapeek/geckodriver')
 driver.get(url)
 
+# some little tricks to jump beyond "load more"
 driver.execute_script("window.scrollTo(0,2000);")
 driver.execute_script("document.elementFromPoint(200, 200).click();")
 time.sleep(2)
 driver.execute_script("document.elementFromPoint(20, 20).click();")
+
+# infinite scrolling
 for y in range(12):
     y = 2000 + 1000 * y
     driver.execute_script("window.scrollTo(0," + str(y) + ");")
@@ -19,6 +23,8 @@ for y in range(12):
 
 res = []
 exploded = False
+
+# start scraping
 for i in range(1, 50):
     if exploded:
         break
@@ -31,6 +37,7 @@ for i in range(1, 50):
             break
 # print(res)
 
+# GET request to save page on local
 n = 0
 for image_url in res:
     image_object = requests.get(image_url)
