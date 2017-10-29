@@ -9,7 +9,7 @@ from io import BytesIO
 # url of Instagram user page
 url = "https://www.instagram.com/" + sys.argv[1] if len(sys.argv) > 1 else "https://www.instagram.com/savagesband"
 # name of output foler
-output_folder = "./instagram@" + sys.argv[2] + "/" if len(sys.argv) > 1 else "./images/"
+output_folder = "./Instagram@" + sys.argv[1] + "/" if len(sys.argv) > 1 else "./images/"
 
 # initialize a selenium web driver
 driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/instapeek/geckodriver')
