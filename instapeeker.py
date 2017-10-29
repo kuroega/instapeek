@@ -1,3 +1,5 @@
+import sys
+import pathlib
 import requests
 import time
 from selenium import webdriver
@@ -5,7 +7,11 @@ from PIL import Image
 from io import BytesIO
 
 # url of Instagram user page
-url = "https://www.instagram.com/savagesband/"
+url = "https://www.instagram.com/" + sys.argv[1] if len(sys.argv) > 1 else "https://www.instagram.com/savagesband"
+# name of output foler
+output_folder = "./instagram@" + sys.argv[2] + "/" if len(sys.argv) > 1 else "./images/"
+
+# initialize a selenium web driver
 driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/instapeek/geckodriver')
 driver.get(url)
 
@@ -23,6 +29,7 @@ for y in range(12):
 
 res = []
 exploded = False
+pathlib.Path(output_folder).mkdir(parents=True, exist_ok=True)
 
 # start scraping
 for i in range(1, 50):
@@ -37,12 +44,14 @@ for i in range(1, 50):
             break
 # print(res)
 
-# GET request to save page on local
+# GET request to save images
 n = 0
 for image_url in res:
     image_object = requests.get(image_url)
     image = Image.open(BytesIO(image_object.content))
-    image.save("/Users/rainer/Pictures/ins/image" + str(n) + "." + image.format, image.format)
+    image.save(output_folder + str(n) + "." + image.format, image.format)
     n += 1
 
 print("Saved " + str(n) + " pieces of art!")
+
+driver.quit()
