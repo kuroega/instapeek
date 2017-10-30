@@ -1,6 +1,6 @@
 # instapeek
 
-Instagram Scrapt powered by **Selenium**
+Instagram Scrapter powered by **Selenium**
 > inspired by [@unscrape](https://github.com/Chalarangelo/unscrape) from [@Chalarangelo](https://github.com/Chalarangelo)
 
 ### Dependencies
@@ -26,3 +26,4 @@ $ open path-to-instapeek/Instagram@emmawatson/
 - [x] support infinite scrolling
 - [x] support command line args
 - [ ] scrape everything (followers, followings)
+- [ ] multithreading
