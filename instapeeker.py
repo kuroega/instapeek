@@ -29,12 +29,12 @@ driver.execute_script("document.elementFromPoint(20, 20).click();")
 #     driver.execute_script("window.scrollTo(0," + str(y) + ");")
 #     time.sleep(1.5)
 script = """
-        setTimeout(scrollToBottom, 500);
+        setTimeout(scrollToBottom, 1000);
         function scrollToBottom(){
             bottom = document.body.scrollHeight;
             current = window.innerHeight+ document.body.scrollTop;
             if((bottom-current) >0){
-                window.scrollTo(0, bottom - 500);
+                window.scrollTo(0, bottom - 1000);
                 setTimeout ( scrollToBottom, 1000 );
             }
         };
