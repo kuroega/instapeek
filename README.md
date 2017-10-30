@@ -23,6 +23,6 @@ $ open path-to-instapeek/Instagram@emmawatson/
 ---
 #### TODO
 - [x] scrape images of a user
-- [ ] support infinite scrolling
+- [x] support infinite scrolling
 - [x] support command line args
 - [ ] scrape everything (followers, followings)

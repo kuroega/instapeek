@@ -22,17 +22,29 @@ time.sleep(2)
 driver.execute_script("document.elementFromPoint(20, 20).click();")
 
 # infinite scrolling
-for y in range(12):
-    y = 2000 + 1000 * y
-    driver.execute_script("window.scrollTo(0," + str(y) + ");")
-    time.sleep(1.5)
+# for y in range(12):
+#     y = 2000 + 1000 * y
+#     driver.execute_script("window.scrollTo(0," + str(y) + ");")
+#     time.sleep(1.5)
+script = """
+        setTimeout(scrollToBottom, 1000);
+        function scrollToBottom(){
+            bottom = document.body.scrollHeight;
+            current = window.innerHeight+ document.body.scrollTop;
+            if((bottom-current) >0){
+                window.scrollTo(0, bottom);
+                setTimeout ( scrollToBottom, 1000 );
+            }
+        };
+        """
+driver.execute_script(script)
 
 res = []
 exploded = False
 pathlib.Path(output_folder).mkdir(parents=True, exist_ok=True)
-
+max_ = int(sys.maxsize)
 # start scraping
-for i in range(1, 50):
+for i in range(1, max_):
     if exploded:
         break
     for j in range(1, 4):
@@ -42,6 +54,8 @@ for i in range(1, 50):
             print("Ablum Exploded!")
             exploded = True
             break
+    time.sleep(0.5)
+    print(i)
 # print(res)
 
 # GET request to save images
