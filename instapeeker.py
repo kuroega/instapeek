@@ -19,6 +19,7 @@ driver.get(url)
 driver.execute_script("window.scrollTo(0,2000);")
 driver.execute_script("document.elementFromPoint(200, 200).click();")
 time.sleep(2)
+driver.execute_script("window.scrollTo(0,2000);")
 driver.execute_script("document.elementFromPoint(20, 20).click();")
 
 # infinite scrolling
@@ -27,7 +28,7 @@ driver.execute_script("document.elementFromPoint(20, 20).click();")
 #     driver.execute_script("window.scrollTo(0," + str(y) + ");")
 #     time.sleep(1.5)
 script = """
-        setTimeout(scrollToBottom, 1000);
+        setTimeout(scrollToBottom, 500);
         function scrollToBottom(){
             bottom = document.body.scrollHeight;
             current = window.innerHeight+ document.body.scrollTop;
@@ -40,22 +41,35 @@ script = """
 driver.execute_script(script)
 
 res = []
+cnt = 0
 exploded = False
 pathlib.Path(output_folder).mkdir(parents=True, exist_ok=True)
 max_ = int(sys.maxsize)
+lastFailTime = float('-inf')
 # start scraping
 for i in range(1, max_):
     if exploded:
         break
+    print(i)
     for j in range(1, 4):
         try:
             res += driver.find_element_by_xpath("//div[@class='_cmdpi']/div[" +str(i)+ "]/div[" + str(j) + "]/a/div/div/img").get_attribute("src"),
         except:
-            print("Ablum Exploded!")
-            exploded = True
+            print("*** Loading Instagram ***")
+            currentFailTime = time.time()
+            if cnt < 10 and currentFailTime - lastFailTime >= 1.0:
+                print(" Slow network! waiting for retry...")
+                time.sleep(10)
+                cnt += 1
+                lastFailTime = time.time()
+            elif cnt < 10 and currentFailTime - lastFailTime < 1.0:
+                print("Scrape completes...")
+                exploded = True
+            else:
+                print("Task failed! Stop retry...")
+                exploded = True
             break
-    time.sleep(0.5)
-    print(i)
+
 # print(res)
 
 # GET request to save images
