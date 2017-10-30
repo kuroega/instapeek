@@ -14,9 +14,10 @@ output_folder = "./Instagram@" + sys.argv[1] + "/" if len(sys.argv) > 1 else "./
 # initialize a selenium web driver
 driver = webdriver.Firefox(executable_path=r'/Users/rainer/Documents/workspace/python/instapeek/geckodriver')
 driver.get(url)
+time.sleep(1)
 
 # some little tricks to jump beyond "load more"
-driver.execute_script("window.scrollTo(0,2000);")
+driver.execute_script("window.scrollTo(0,900);")
 driver.execute_script("document.elementFromPoint(200, 200).click();")
 time.sleep(2)
 driver.execute_script("window.scrollTo(0,2000);")
@@ -33,7 +34,7 @@ script = """
             bottom = document.body.scrollHeight;
             current = window.innerHeight+ document.body.scrollTop;
             if((bottom-current) >0){
-                window.scrollTo(0, bottom);
+                window.scrollTo(0, bottom - 500);
                 setTimeout ( scrollToBottom, 1000 );
             }
         };
@@ -59,7 +60,7 @@ for i in range(1, max_):
             currentFailTime = time.time()
             if cnt < 10 and currentFailTime - lastFailTime >= 1.0:
                 print(" Slow network! waiting for retry...")
-                time.sleep(10)
+                time.sleep(15)
                 cnt += 1
                 lastFailTime = time.time()
             elif cnt < 10 and currentFailTime - lastFailTime < 1.0:
@@ -74,12 +75,14 @@ for i in range(1, max_):
 
 # GET request to save images
 n = 0
-for image_url in res:
-    image_object = requests.get(image_url)
-    image = Image.open(BytesIO(image_object.content))
-    image.save(output_folder + str(n) + "." + image.format, image.format)
-    n += 1
-
-print("Saved " + str(n) + " pieces of art!")
+while res:
+    image_object = requests.get(res.pop(0))
+    try:
+        image = Image.open(BytesIO(image_object.content))
+        image.save(output_folder + str(n) + "." + image.format, image.format)
+        n += 1
+    except OSError as err:
+        continue
+print("Saved " + str(n - 1) + " pieces of art!")
 
 driver.quit()
