@@ -12,12 +12,12 @@ Instagram Scrapt powered by **Selenium**
 example: peek Emma Watson's photos
 
 ```sh
-python3 instapeeker.py emmawatson
+$ python3 instapeeker.py emmawatson
 ```
 ### Peek
 **mac** os users:
 ```sh
-open path-to-instapeek/Instagram@emmawatson/
+$ open path-to-instapeek/Instagram@emmawatson/
 ```
 
 ---
